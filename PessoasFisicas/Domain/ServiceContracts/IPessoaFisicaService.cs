@@ -1,14 +1,15 @@
 ﻿using Domain.Entities;
+using Domain.Response;
 
-namespace Domain.Ports
+namespace Domain.ServiceContracts
 {
-    public interface IPessoaFisicaRepository
+    public interface IPessoaFisicaService
     {
         public Task<PessoaFisica> CriarAsync(PessoaFisica PessoaFisica);
 
-        public Task<PessoaFisica> BuscarAsync(Guid Id);
+        public Task<PessoaFisicaResponse> BuscarAsync(Guid Id);
 
-        public Task<IEnumerable<PessoaFisica>> BuscarAsync();
+        public Task<IEnumerable<PessoaFisicaResponse>> BuscarAsync();
 
         public Task<PessoaFisica> AtualizarAsync(PessoaFisica PessoaFisica);
 

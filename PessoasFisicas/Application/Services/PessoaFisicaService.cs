@@ -1,33 +1,69 @@
-﻿using Application.Contracts;
-using Domain.Entities;
+﻿using Domain.Entities;
+using Domain.Ports;
+using Domain.Response;
+using Domain.ServiceContracts;
 
 namespace Application.Services
 {
-    public class PessoaFisicaService : IPessoaFisicaService
+    public class PessoaFisicaService(
+        IPessoaFisicaRepository repository,
+        IEnderecoService enderecoService,
+        IEmailService emailService
+        ) : IPessoaFisicaService
     {
-        public PessoaFisica Atualizar(PessoaFisica PessoaFisica)
+        public async Task<PessoaFisica> AtualizarAsync(PessoaFisica PessoaFisica)
         {
-            throw new NotImplementedException();
+            return await repository.AtualizarAsync(PessoaFisica);
         }
 
-        public PessoaFisica Buscar(Guid Id)
+        public async Task<PessoaFisicaResponse> BuscarAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            var pessoa = await repository.BuscarAsync(Id);
+            var enderecoTask = enderecoService.BuscarAsync(pessoa.Endereco);
+
+            var response = ConvertToResponse(pessoa);
+            response.Endereco = await enderecoTask;
+            return response;
         }
 
-        public IEnumerable<PessoaFisica> Buscar()
+        public async Task<IEnumerable<PessoaFisicaResponse>> BuscarAsync()
         {
-            throw new NotImplementedException();
+            List<PessoaFisicaResponse> pessoasResponse = [];
+            var pessoas = await repository.BuscarAsync();
+
+            foreach (var pessoa in pessoas)
+            {
+                var enderecoTask = enderecoService.BuscarAsync(pessoa.Endereco);
+                var response = ConvertToResponse(pessoa);
+                response.Endereco = await enderecoTask;
+                pessoasResponse.Add(response);
+            }
+
+            return pessoasResponse;
         }
 
-        public PessoaFisica Criar(PessoaFisica PessoaFisica)
+        public async Task<PessoaFisica> CriarAsync(PessoaFisica PessoaFisica)
         {
-            throw new NotImplementedException();
+            var result = await repository.CriarAsync(PessoaFisica);
+            emailService.EnviarEmail(new());
+
+            return result;
         }
 
-        public int Excluir(Guid Id)
+        public async Task<int> ExcluirAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            return await repository.ExcluirAsync(Id);
+        }
+
+        private static PessoaFisicaResponse ConvertToResponse(PessoaFisica pessoaFisica)
+        {
+            return new()
+            {
+                Id = pessoaFisica.Id,
+                Nome = pessoaFisica.Nome,
+                Sobrenome = pessoaFisica.Sobrenome,
+                Nascimento = pessoaFisica.Nascimento
+            };
         }
     }
 }

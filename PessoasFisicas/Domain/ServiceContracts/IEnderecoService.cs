@@ -1,11 +1,11 @@
 ﻿using Domain.Entities;
 
-namespace Domain.Ports
+namespace Domain.ServiceContracts
 {
-    public interface IEnderecoRepository
+    public interface IEnderecoService
     {
         public Task<Endereco> CriarAsync(Endereco endereco);
-
+        
         public Task<Endereco> BuscarAsync(Guid Id);
 
         public Task<IEnumerable<Endereco>> BuscarAsync();

@@ -1,33 +1,34 @@
-﻿using Application.Contracts;
-using Domain.Entities;
+﻿using Domain.Entities;
+using Domain.Ports;
+using Domain.ServiceContracts;
 
 namespace Application.Services
 {
-    public class EnderecoService : IEnderecoService
+    public class EnderecoService(IEnderecoRepository repository) : IEnderecoService
     {
-        public Endereco Atualizar(Endereco endereco)
+        public async Task<Endereco> AtualizarAsync(Endereco endereco)
         {
-            throw new NotImplementedException();
+            return await repository.AtualizarAsync(endereco);
         }
 
-        public Endereco Buscar(Guid Id)
+        public async Task<Endereco> BuscarAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            return await repository.BuscarAsync(Id);
         }
 
-        public IEnumerable<Endereco> Buscar()
+        public async Task<IEnumerable<Endereco>> BuscarAsync()
         {
-            throw new NotImplementedException();
+            return await repository.BuscarAsync();
         }
 
-        public Endereco Criar(Endereco endereco)
+        public async Task<Endereco> CriarAsync(Endereco endereco)
         {
-            throw new NotImplementedException();
+            return await repository.CriarAsync(endereco);
         }
 
-        public int Excluir(Guid Id)
+        public async Task<int> ExcluirAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            return await repository.ExcluirAsync(Id);
         }
     }
 }

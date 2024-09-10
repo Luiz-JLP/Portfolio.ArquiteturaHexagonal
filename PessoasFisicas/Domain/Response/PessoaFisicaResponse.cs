@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities
+﻿using Domain.Entities;
+
+namespace Domain.Response
 {
-    public class PessoaFisica
+    public class PessoaFisicaResponse
     {
         public Guid Id { get; set; }
 
@@ -10,6 +12,6 @@
 
         public DateTime Nascimento { get; set; }
 
-        public Guid Endereco { get; set; }
+        public Endereco Endereco { get; set; } = new();
     }
 }
