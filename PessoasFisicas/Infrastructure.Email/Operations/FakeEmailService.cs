@@ -7,8 +7,7 @@ namespace Infrastructure.Email.Operations
     {
         public void EnviarEmail(Domain.Entities.Email email)
         {
-            var mensagem = $"E-mail Enviado - Rementente: {email.De} - Destinatario: {email.Para} - Assunto: {email.Assunto} - Mensagem: {email.Mensagem}";
-            logger.LogInformation(mensagem);
+            logger.LogInformation("E-mail Enviado - Rementente: {De} - Destinatario: {Para} - Assunto: {Assunto} - Mensagem: {Mensagem}", email.De, email.Para, email.Assunto, email.Mensagem);
         }
     }
 }
