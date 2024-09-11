@@ -4,14 +4,14 @@ namespace Domain.Ports
 {
     public interface IPessoaFisicaRepository
     {
-        public Task<PessoaFisica> CriarAsync(PessoaFisica PessoaFisica);
+        public Task<PessoaFisica> CriarAsync(PessoaFisica pessoaFisica);
 
-        public Task<PessoaFisica> BuscarAsync(Guid Id);
+        public Task<PessoaFisica> BuscarAsync(Guid id);
 
         public Task<IEnumerable<PessoaFisica>> BuscarAsync();
 
-        public Task<PessoaFisica> AtualizarAsync(PessoaFisica PessoaFisica);
+        public Task<PessoaFisica> AtualizarAsync(PessoaFisica pessoaFisica);
 
-        public Task<int> ExcluirAsync(Guid Id);
+        public Task<int> ExcluirAsync(Guid id);
     }
 }
