@@ -16,6 +16,8 @@ namespace Domain.Entities
 
         public string Municipio { get; set; } = string.Empty;
 
+        public string Estado { get; set; } = string.Empty;
+
         public string Pais { get; set; } = string.Empty;
 
         public string Cep { get; set; } = string.Empty;
