@@ -1,17 +1,18 @@
 ﻿using Domain.Entities;
+using Domain.Result;
 
 namespace Domain.ServiceContracts
 {
     public interface IEnderecoService
     {
-        public Task<Endereco> CriarAsync(Endereco endereco);
+        public Task<Result<Endereco, Error>> CriarAsync(Endereco endereco);
         
-        public Task<Endereco> BuscarAsync(Guid Id);
+        public Task<Result<Endereco, Error>> BuscarAsync(Guid id);
 
-        public Task<IEnumerable<Endereco>> BuscarAsync();
+        public Task<Result<List<Endereco>, Error>> BuscarAsync();
 
-        public Task<Endereco> AtualizarAsync(Endereco endereco);
+        public Task<Result<Endereco, Error>> AtualizarAsync(Endereco endereco);
 
-        public Task<int> ExcluirAsync(Guid Id);
+        public Task<Result<int, Error>> ExcluirAsync(Guid id);
     }
 }

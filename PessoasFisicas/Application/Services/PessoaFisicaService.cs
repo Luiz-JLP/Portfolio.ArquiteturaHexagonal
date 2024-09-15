@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Ports;
 using Domain.Response;
+using Domain.Result;
 using Domain.ServiceContracts;
 
 namespace Application.Services
@@ -22,7 +23,14 @@ namespace Application.Services
             var enderecoTask = enderecoService.BuscarAsync(pessoa.Endereco);
 
             var response = ConvertToResponse(pessoa);
-            response.Endereco = await enderecoTask;
+
+            var enderecoResult = await enderecoTask;
+
+            enderecoResult.Match(
+                value => response.Endereco = value,
+                error => error
+                );
+
             return response;
         }
 
@@ -35,7 +43,14 @@ namespace Application.Services
             {
                 var enderecoTask = enderecoService.BuscarAsync(pessoa.Endereco);
                 var response = ConvertToResponse(pessoa);
-                response.Endereco = await enderecoTask;
+
+                var enderecoResult = await enderecoTask;
+
+                enderecoResult.Match(
+                    value => response.Endereco = value,
+                    error => error
+                    );
+
                 pessoasResponse.Add(response);
             }
 

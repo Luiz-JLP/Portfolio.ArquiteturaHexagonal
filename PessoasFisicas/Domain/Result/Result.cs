@@ -1,4 +1,4 @@
-﻿namespace Application.Result
+﻿namespace Domain.Result
 {
     public class Result<TValue, TError>
     {
