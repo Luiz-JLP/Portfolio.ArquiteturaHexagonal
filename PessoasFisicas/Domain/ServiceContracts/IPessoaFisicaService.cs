@@ -1,18 +1,19 @@
 ﻿using Domain.Entities;
 using Domain.Response;
+using Domain.Result;
 
 namespace Domain.ServiceContracts
 {
     public interface IPessoaFisicaService
     {
-        public Task<PessoaFisica> CriarAsync(PessoaFisica PessoaFisica);
+        public Task<Result<PessoaFisica, Error>> CriarAsync(PessoaFisica pessoaFisica);
 
-        public Task<PessoaFisicaResponse> BuscarAsync(Guid Id);
+        public Task<Result<PessoaFisicaResponse, Error>> BuscarAsync(Guid id);
 
-        public Task<IEnumerable<PessoaFisicaResponse>> BuscarAsync();
+        public Task<Result<List<PessoaFisicaResponse>, Error>> BuscarAsync();
 
-        public Task<PessoaFisica> AtualizarAsync(PessoaFisica PessoaFisica);
+        public Task<Result<PessoaFisica, Error>> AtualizarAsync(PessoaFisica pessoaFisica);
 
-        public Task<int> ExcluirAsync(Guid Id);
+        public Task<Result<int, Error>> ExcluirAsync(Guid id);
     }
 }

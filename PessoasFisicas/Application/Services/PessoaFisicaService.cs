@@ -12,14 +12,14 @@ namespace Application.Services
         IEmailService emailService
         ) : IPessoaFisicaService
     {
-        public async Task<PessoaFisica> AtualizarAsync(PessoaFisica PessoaFisica)
+        public async Task<Result<PessoaFisica, Error>> AtualizarAsync(PessoaFisica pessoaFisica)
         {
-            return await repository.AtualizarAsync(PessoaFisica);
+            return await repository.AtualizarAsync(pessoaFisica);
         }
 
-        public async Task<PessoaFisicaResponse> BuscarAsync(Guid Id)
+        public async Task<Result<PessoaFisicaResponse, Error>> BuscarAsync(Guid id)
         {
-            var pessoa = await repository.BuscarAsync(Id);
+            var pessoa = await repository.BuscarAsync(id);
             var enderecoTask = enderecoService.BuscarAsync(pessoa.Endereco);
 
             var response = ConvertToResponse(pessoa);
@@ -34,7 +34,7 @@ namespace Application.Services
             return response;
         }
 
-        public async Task<IEnumerable<PessoaFisicaResponse>> BuscarAsync()
+        public async Task<Result<List<PessoaFisicaResponse>, Error>> BuscarAsync()
         {
             List<PessoaFisicaResponse> pessoasResponse = [];
             var pessoas = await repository.BuscarAsync();
@@ -57,17 +57,17 @@ namespace Application.Services
             return pessoasResponse;
         }
 
-        public async Task<PessoaFisica> CriarAsync(PessoaFisica PessoaFisica)
+        public async Task<Result<PessoaFisica, Error>> CriarAsync(PessoaFisica pessoaFisica)
         {
-            var result = await repository.CriarAsync(PessoaFisica);
+            var result = await repository.CriarAsync(pessoaFisica);
             emailService.EnviarEmail(new());
 
             return result;
         }
 
-        public async Task<int> ExcluirAsync(Guid Id)
+        public async Task<Result<int, Error>> ExcluirAsync(Guid id)
         {
-            return await repository.ExcluirAsync(Id);
+            return await repository.ExcluirAsync(id);
         }
 
         private static PessoaFisicaResponse ConvertToResponse(PessoaFisica pessoaFisica)

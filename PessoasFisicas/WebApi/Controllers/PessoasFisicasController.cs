@@ -1,6 +1,9 @@
 ﻿using Domain.Entities;
+using Domain.Response;
+using Domain.Result;
 using Domain.ServiceContracts;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 
 namespace WebApi.Controllers
 {
@@ -11,36 +14,81 @@ namespace WebApi.Controllers
         [HttpGet("{id:Guid}")]
         public async Task<IActionResult> Buscar(Guid id)
         {
-            var pessoaFisica = await service.BuscarAsync(id);
-            return Ok(pessoaFisica);
+            var pessoaFisicaResult = await service.BuscarAsync(id);
+
+            PessoaFisicaResponse? response = null;
+            Error? errorResponse = null;
+
+            pessoaFisicaResult.Match(
+                value => response = value,
+                error => errorResponse = error
+            );
+
+            return response is not null ? Ok(response) : BadRequest(errorResponse?.ToJson());
         }
 
         [HttpGet]
         public async Task<IActionResult> Buscar()
         {
-            var pessoaFisica = await service.BuscarAsync();
-            return Ok(pessoaFisica);
+            var pessoaFisicaResult = await service.BuscarAsync();
+
+            List<PessoaFisicaResponse>? response = null;
+            Error? errorResponse = null;
+
+            pessoaFisicaResult.Match(
+                value => response = value,
+                error => errorResponse = error
+            );
+
+            return response is not null ? Ok(response) : BadRequest(errorResponse?.ToJson());
         }
 
         [HttpPost]
         public async Task<IActionResult> Criar(PessoaFisica novoPessoaFisica)
         {
-            var pessoaFisica = await service.CriarAsync(novoPessoaFisica);
-            return Ok(pessoaFisica);
+            var pessoaFisicaResult = await service.CriarAsync(novoPessoaFisica);
+
+            PessoaFisica? response = null;
+            Error? errorResponse = null;
+
+            pessoaFisicaResult.Match(
+                value => response = value,
+                error => errorResponse = error
+            );
+
+            return response is not null ? Ok(response) : BadRequest(errorResponse?.ToJson());
         }
 
         [HttpPut]
         public async Task<IActionResult> Atualizar(PessoaFisica pessoaFisicaAtualizado)
         {
-            var pessoaFisica = await service.AtualizarAsync(pessoaFisicaAtualizado);
-            return Ok(pessoaFisica);
+            var pessoaFisicaResult = await service.AtualizarAsync(pessoaFisicaAtualizado);
+
+            PessoaFisica? response = null;
+            Error? errorResponse = null;
+
+            pessoaFisicaResult.Match(
+                value => response = value,
+                error => errorResponse = error
+            );
+
+            return response is not null ? Ok(response) : BadRequest(errorResponse?.ToJson());
         }
 
         [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> Excluir(Guid id)
         {
-            var quantidade = await service.ExcluirAsync(id);
-            return Ok($"Quantidade de registros excluídos: {quantidade}");
+            var pessoaFisicaResult = await service.ExcluirAsync(id);
+
+            int? response = null;
+            Error? errorResponse = null;
+
+            pessoaFisicaResult.Match(
+                value => response = value,
+                error => errorResponse = error
+            );
+
+            return response is not null ? Ok($"Quantidade de registros excluídos: {response}") : BadRequest(errorResponse?.ToJson());
         }
     }
 }
