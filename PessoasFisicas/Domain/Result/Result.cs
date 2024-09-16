@@ -1,4 +1,6 @@
-﻿namespace Domain.Result
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace Domain.Result
 {
     public class Result<TValue, TError>
     {
@@ -26,6 +28,11 @@
         public static implicit operator Result<TValue, TError>(TError? error) => new(error);
 
         public Result<TValue, TError> Match(Func<TValue, Result<TValue, TError>> success, Func<TError, Result<TValue, TError>> failure)
+        {
+            return _isSuccess ? success(Value!) : failure(Error!);
+        }
+
+        public ObjectResult Match(Func<TValue, ObjectResult> success, Func<TError, ObjectResult> failure)
         {
             return _isSuccess ? success(Value!) : failure(Error!);
         }

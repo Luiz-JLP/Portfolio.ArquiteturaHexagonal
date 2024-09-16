@@ -1,9 +1,6 @@
 ﻿using Domain.Entities;
-using Domain.Response;
-using Domain.Result;
 using Domain.ServiceContracts;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
 
 namespace WebApi.Controllers
 {
@@ -16,15 +13,14 @@ namespace WebApi.Controllers
         {
             var pessoaFisicaResult = await service.BuscarAsync(id);
 
-            PessoaFisicaResponse? response = null;
-            Error? errorResponse = null;
+            ObjectResult? result = null;
 
             pessoaFisicaResult.Match(
-                value => response = value,
-                error => errorResponse = error
+                value => result = Ok(value),
+                error => result = BadRequest(error.ToJson())
             );
 
-            return response is not null ? Ok(response) : BadRequest(errorResponse?.ToJson());
+            return result!;
         }
 
         [HttpGet]
@@ -32,15 +28,14 @@ namespace WebApi.Controllers
         {
             var pessoaFisicaResult = await service.BuscarAsync();
 
-            List<PessoaFisicaResponse>? response = null;
-            Error? errorResponse = null;
+            ObjectResult? result = null;
 
             pessoaFisicaResult.Match(
-                value => response = value,
-                error => errorResponse = error
+                value => result = Ok(value),
+                error => result = BadRequest(error.ToJson())
             );
 
-            return response is not null ? Ok(response) : BadRequest(errorResponse?.ToJson());
+            return result!;
         }
 
         [HttpPost]
@@ -48,15 +43,14 @@ namespace WebApi.Controllers
         {
             var pessoaFisicaResult = await service.CriarAsync(novoPessoaFisica);
 
-            PessoaFisica? response = null;
-            Error? errorResponse = null;
+            ObjectResult? result = null;
 
             pessoaFisicaResult.Match(
-                value => response = value,
-                error => errorResponse = error
+                value => result = Ok(value),
+                error => result = BadRequest(error.ToJson())
             );
 
-            return response is not null ? Ok(response) : BadRequest(errorResponse?.ToJson());
+            return result!;
         }
 
         [HttpPut]
@@ -64,15 +58,14 @@ namespace WebApi.Controllers
         {
             var pessoaFisicaResult = await service.AtualizarAsync(pessoaFisicaAtualizado);
 
-            PessoaFisica? response = null;
-            Error? errorResponse = null;
+            ObjectResult? result = null;
 
             pessoaFisicaResult.Match(
-                value => response = value,
-                error => errorResponse = error
+                value => result = Ok(value),
+                error => result = BadRequest(error.ToJson())
             );
 
-            return response is not null ? Ok(response) : BadRequest(errorResponse?.ToJson());
+            return result!;
         }
 
         [HttpDelete("{id:Guid}")]
@@ -80,15 +73,14 @@ namespace WebApi.Controllers
         {
             var pessoaFisicaResult = await service.ExcluirAsync(id);
 
-            int? response = null;
-            Error? errorResponse = null;
+            ObjectResult? result = null;
 
             pessoaFisicaResult.Match(
-                value => response = value,
-                error => errorResponse = error
+                value => result = Ok(value),
+                error => result = BadRequest(error.ToJson())
             );
 
-            return response is not null ? Ok($"Quantidade de registros excluídos: {response}") : BadRequest(errorResponse?.ToJson());
+            return result!;
         }
     }
 }
