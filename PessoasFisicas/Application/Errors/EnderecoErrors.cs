@@ -1,7 +1,9 @@
 ﻿using Domain.Result;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Application.Errors
 {
+    [ExcludeFromCodeCoverage]
     public static class EnderecoErrors
     {
         public static Error Atualizar(string mensagem) => new("Endereco.Atualizar", mensagem);

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Domain.Result
 {
+    [ExcludeFromCodeCoverage]
     public class Result<TValue, TError>
     {
         public readonly TValue? Value;

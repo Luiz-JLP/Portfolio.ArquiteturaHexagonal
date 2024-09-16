@@ -1,9 +1,11 @@
 ﻿using Application.Services;
 using Domain.ServiceContracts;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Application.Startup
 {
+    [ExcludeFromCodeCoverage]
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection ConfigureApplication(this IServiceCollection services)

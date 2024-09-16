@@ -1,5 +1,8 @@
-﻿namespace Application.Errors
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Application.Errors
 {
+    [ExcludeFromCodeCoverage]
     public static class PessoaFisicaErrors
     {
         public static Domain.Result.Error Atualizar(string mensagem) => new("PessoaFisica.Atualizar", mensagem);
