@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Errors;
+using Domain.Entities;
 using Domain.Ports;
 using Domain.Response;
 using Domain.Result;
@@ -14,34 +15,23 @@ namespace Application.Services
     {
         public async Task<Result<PessoaFisica, Error>> AtualizarAsync(PessoaFisica pessoaFisica)
         {
-            return await repository.AtualizarAsync(pessoaFisica);
+            try
+            {
+                return await repository.AtualizarAsync(pessoaFisica);
+            }
+            catch (Exception ex)
+            {
+                return PessoaFisicaErrors.Atualizar($"Houve um erro durante o processo de atualização. Mensagem: {ex.Message}");
+            }
         }
 
         public async Task<Result<PessoaFisicaResponse, Error>> BuscarAsync(Guid id)
         {
-            var pessoa = await repository.BuscarAsync(id);
-            var enderecoTask = enderecoService.BuscarAsync(pessoa.Endereco);
-
-            var response = ConvertToResponse(pessoa);
-
-            var enderecoResult = await enderecoTask;
-
-            enderecoResult.Match(
-                value => response.Endereco = value,
-                error => error
-                );
-
-            return response;
-        }
-
-        public async Task<Result<List<PessoaFisicaResponse>, Error>> BuscarAsync()
-        {
-            List<PessoaFisicaResponse> pessoasResponse = [];
-            var pessoas = await repository.BuscarAsync();
-
-            foreach (var pessoa in pessoas)
+            try
             {
+                var pessoa = await repository.BuscarAsync(id);
                 var enderecoTask = enderecoService.BuscarAsync(pessoa.Endereco);
+
                 var response = ConvertToResponse(pessoa);
 
                 var enderecoResult = await enderecoTask;
@@ -51,23 +41,69 @@ namespace Application.Services
                     error => error
                     );
 
-                pessoasResponse.Add(response);
+                return response;
             }
+            catch (Exception ex)
+            {
+                return PessoaFisicaErrors.Buscar($"Houve um erro durante o processo de busca. Mensagem: {ex.Message}");
+            }            
+        }
 
-            return pessoasResponse;
+        public async Task<Result<List<PessoaFisicaResponse>, Error>> BuscarAsync()
+        {
+            try
+            {
+                List<PessoaFisicaResponse> pessoasResponse = [];
+                var pessoas = await repository.BuscarAsync();
+
+                foreach (var pessoa in pessoas)
+                {
+                    var enderecoTask = enderecoService.BuscarAsync(pessoa.Endereco);
+                    var response = ConvertToResponse(pessoa);
+
+                    var enderecoResult = await enderecoTask;
+
+                    enderecoResult.Match(
+                        value => response.Endereco = value,
+                        error => error
+                        );
+
+                    pessoasResponse.Add(response);
+                }
+
+                return pessoasResponse;
+            }
+            catch (Exception ex)
+            {
+                return PessoaFisicaErrors.Buscar($"Houve um erro durante o processo de busca. Mensagem: {ex.Message}");
+            }            
         }
 
         public async Task<Result<PessoaFisica, Error>> CriarAsync(PessoaFisica pessoaFisica)
         {
-            var result = await repository.CriarAsync(pessoaFisica);
-            emailService.EnviarEmail(new());
+            try
+            {
+                var result = await repository.CriarAsync(pessoaFisica);
+                emailService.EnviarEmail(new());
 
-            return result;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return PessoaFisicaErrors.Criar($"Houve um erro durante o processo de criação. Mensagem: {ex.Message}");
+            }
         }
 
         public async Task<Result<int, Error>> ExcluirAsync(Guid id)
         {
-            return await repository.ExcluirAsync(id);
+            try
+            {
+                return await repository.ExcluirAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return PessoaFisicaErrors.Excluir($"Houve um erro durante o processo de exclusão. Mensagem: {ex.Message}");
+            }
         }
 
         private static PessoaFisicaResponse ConvertToResponse(PessoaFisica pessoaFisica)
