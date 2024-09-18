@@ -33,7 +33,7 @@ namespace Infrastructure.Data.Repository
 
         public async Task<int> ExcluirAsync(Guid id)
         {
-            var endereco = context.Enderecos.FirstOrDefaultAsync(x => x.Id == id);
+            var endereco = await context.Enderecos.FirstOrDefaultAsync(x => x.Id == id);
 
             if (endereco is null)
                 return 0;

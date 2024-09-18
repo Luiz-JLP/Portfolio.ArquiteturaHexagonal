@@ -33,7 +33,7 @@ namespace Infrastructure.Data.Repository
 
         public async Task<int> ExcluirAsync(Guid id)
         {
-            var pessoaFisica = context.PessoaFisicas.FirstOrDefaultAsync(x => x.Id == id);
+            var pessoaFisica = await context.PessoaFisicas.FirstOrDefaultAsync(x => x.Id == id);
 
             if (pessoaFisica is null)
                 return 0;

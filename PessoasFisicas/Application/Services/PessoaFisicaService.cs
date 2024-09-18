@@ -126,7 +126,8 @@ namespace Application.Services
                 Id = Guid.NewGuid(),
                 Nome = request.Nome,
                 Sobrenome = request.Sobrenome,
-                Nascimento = request.Nascimento
+                Nascimento = request.Nascimento,
+                Endereco = request.Endereco
             };
         }
     }
