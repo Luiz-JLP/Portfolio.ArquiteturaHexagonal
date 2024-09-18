@@ -1,11 +1,12 @@
 ﻿using Domain.Entities;
+using Domain.Request;
 using Domain.Result;
 
 namespace Domain.ServiceContracts
 {
     public interface IEnderecoService
     {
-        public Task<Result<Endereco, Error>> CriarAsync(Endereco endereco);
+        public Task<Result<Endereco, Error>> CriarAsync(EnderecoRequest request);
         
         public Task<Result<Endereco, Error>> BuscarAsync(Guid id);
 

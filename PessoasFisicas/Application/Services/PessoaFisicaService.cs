@@ -1,6 +1,7 @@
 ﻿using Application.Errors;
 using Domain.Entities;
 using Domain.Ports;
+using Domain.Request;
 using Domain.Response;
 using Domain.Result;
 using Domain.ServiceContracts;
@@ -79,10 +80,11 @@ namespace Application.Services
             }            
         }
 
-        public async Task<Result<PessoaFisica, Error>> CriarAsync(PessoaFisica pessoaFisica)
+        public async Task<Result<PessoaFisica, Error>> CriarAsync(PessoaFisicaRequest request)
         {
             try
             {
+                var pessoaFisica = ConvertToPessoaFisica(request);
                 var result = await repository.CriarAsync(pessoaFisica);
                 emailService.EnviarEmail(new());
 
@@ -114,6 +116,17 @@ namespace Application.Services
                 Nome = pessoaFisica.Nome,
                 Sobrenome = pessoaFisica.Sobrenome,
                 Nascimento = pessoaFisica.Nascimento
+            };
+        }
+
+        private static PessoaFisica ConvertToPessoaFisica(PessoaFisicaRequest request)
+        {
+            return new()
+            {
+                Id = Guid.NewGuid(),
+                Nome = request.Nome,
+                Sobrenome = request.Sobrenome,
+                Nascimento = request.Nascimento
             };
         }
     }

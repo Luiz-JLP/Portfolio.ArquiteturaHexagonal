@@ -15,3 +15,4 @@ namespace Application.Errors
         public static Error Excluir(string mensagem) => new("Endereco.Excluir", mensagem);
     }
 }
+

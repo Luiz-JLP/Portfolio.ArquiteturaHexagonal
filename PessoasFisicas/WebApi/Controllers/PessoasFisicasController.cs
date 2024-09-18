@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Request;
 using Domain.ServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace WebApi.Controllers
     public class PessoasFisicasController(IPessoaFisicaService service) : Controller
     {
         [HttpGet("{id:Guid}")]
+        [ProducesResponseType(typeof(PessoaFisica), StatusCodes.Status200OK)]
         public async Task<IActionResult> Buscar(Guid id)
         {
             var pessoaFisicaResult = await service.BuscarAsync(id);
@@ -24,6 +26,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<PessoaFisica>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Buscar()
         {
             var pessoaFisicaResult = await service.BuscarAsync();
@@ -39,9 +42,10 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Criar(PessoaFisica novoPessoaFisica)
+        [ProducesResponseType(typeof(PessoaFisica), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Criar(PessoaFisicaRequest request)
         {
-            var pessoaFisicaResult = await service.CriarAsync(novoPessoaFisica);
+            var pessoaFisicaResult = await service.CriarAsync(request);
 
             ObjectResult? result = null;
 
@@ -54,6 +58,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
+        [ProducesResponseType(typeof(PessoaFisica), StatusCodes.Status200OK)]
         public async Task<IActionResult> Atualizar(PessoaFisica pessoaFisicaAtualizado)
         {
             var pessoaFisicaResult = await service.AtualizarAsync(pessoaFisicaAtualizado);
@@ -69,6 +74,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id:Guid}")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public async Task<IActionResult> Excluir(Guid id)
         {
             var pessoaFisicaResult = await service.ExcluirAsync(id);

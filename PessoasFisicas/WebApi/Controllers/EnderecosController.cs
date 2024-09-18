@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Request;
 using Domain.ServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace WebApi.Controllers
     public class EnderecosController(IEnderecoService service) : Controller
     {
         [HttpGet("{id:Guid}")]
+        [ProducesResponseType(typeof(Endereco), StatusCodes.Status200OK)]
         public async Task<IActionResult> Buscar(Guid id)
         {
             var enderecoResult = await service.BuscarAsync(id);
@@ -24,6 +26,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<Endereco>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Buscar()
         {
             var enderecoResult = await service.BuscarAsync();
@@ -39,9 +42,10 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Criar(Endereco novoEndereco)
+        [ProducesResponseType(typeof(Endereco), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Criar(EnderecoRequest request)
         {
-            var enderecoResult = await service.CriarAsync(novoEndereco);
+            var enderecoResult = await service.CriarAsync(request);
 
             ObjectResult? result = null;
 
@@ -54,6 +58,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
+        [ProducesResponseType(typeof(Endereco), StatusCodes.Status200OK)]
         public async Task<IActionResult> Atualizar(Endereco enderecoAtualizado)
         {
             var enderecoResult = await service.AtualizarAsync(enderecoAtualizado);
@@ -69,6 +74,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id:Guid}")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         public async Task<IActionResult> Excluir(Guid id)
         {
             var enderecoResult = await service.ExcluirAsync(id);

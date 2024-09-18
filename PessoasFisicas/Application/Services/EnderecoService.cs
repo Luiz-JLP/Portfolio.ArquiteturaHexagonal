@@ -1,6 +1,7 @@
 ﻿using Application.Errors;
 using Domain.Entities;
 using Domain.Ports;
+using Domain.Request;
 using Domain.Result;
 using Domain.ServiceContracts;
 
@@ -45,10 +46,11 @@ namespace Application.Services
             }
         }
 
-        public async Task<Result<Endereco, Error>> CriarAsync(Endereco endereco)
+        public async Task<Result<Endereco, Error>> CriarAsync(EnderecoRequest request)
         {
             try
             {
+                var endereco = ConvertToEndereco(request);
                 return await repository.CriarAsync(endereco);
             }
             catch (Exception ex)
@@ -67,6 +69,22 @@ namespace Application.Services
             {
                 return EnderecoErrors.Excluir($"Houve um erro durante o processo de exclusão. Mensagem: {ex.Message}");
             }
+        }
+
+        private static Endereco ConvertToEndereco(EnderecoRequest request)
+        {
+            return new()
+            {
+                Id = Guid.NewGuid(),
+                TipoEndereco = request.TipoEndereco,
+                Logradouro = request.Logradouro,
+                Numero = request.Numero,
+                Bairro = request.Bairro,
+                Municipio = request.Municipio,
+                Estado = request.Estado,
+                Pais = request.Pais,
+                Cep = request.Cep
+            };
         }
     }
 }
