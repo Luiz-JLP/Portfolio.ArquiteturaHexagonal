@@ -2,6 +2,7 @@
 using AutoFixture;
 using Domain.Entities;
 using Domain.Ports;
+using Domain.Request;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 
@@ -121,10 +122,12 @@ namespace PessoasFisicas.Tests.Application.Services
         {
             // Arrange
             var endereco = new Fixture().Create<Endereco>();
-            _repository.CriarAsync(endereco).Returns(endereco);
+            var request = new Fixture().Create<EnderecoRequest>();
+
+            _repository.CriarAsync(endereco).ReturnsForAnyArgs(endereco);
 
             // Act
-            var resultado = await _service.CriarAsync(endereco);
+            var resultado = await _service.CriarAsync(request);
 
             // Assert
             Assert.NotNull(resultado);
@@ -136,12 +139,13 @@ namespace PessoasFisicas.Tests.Application.Services
         {
             // Arrange
             var endereco = new Fixture().Create<Endereco>();
+            var request = new Fixture().Create<EnderecoRequest>();
             var mensagemEsperada = "Erro gerado no teste.";
 
-            _repository.CriarAsync(endereco).Throws(new Exception(mensagemEsperada));
+            _repository.CriarAsync(endereco).ThrowsAsyncForAnyArgs(new Exception(mensagemEsperada));
 
             // Act
-            var resultado = await _service.CriarAsync(endereco);
+            var resultado = await _service.CriarAsync(request);
 
             // Assert
             Assert.NotNull(resultado);

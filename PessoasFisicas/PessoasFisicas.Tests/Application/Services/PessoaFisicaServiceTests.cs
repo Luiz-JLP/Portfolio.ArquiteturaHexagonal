@@ -2,6 +2,7 @@
 using AutoFixture;
 using Domain.Entities;
 using Domain.Ports;
+using Domain.Request;
 using Domain.ServiceContracts;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
@@ -131,10 +132,12 @@ namespace PessoasFisicas.Tests.Application.Services
         {
             // Arrange
             var pessoaFisica = new Fixture().Create<PessoaFisica>();
-            _repository.CriarAsync(pessoaFisica).Returns(pessoaFisica);
+            var request = new Fixture().Create<PessoaFisicaRequest>();
+
+            _repository.CriarAsync(pessoaFisica).ReturnsForAnyArgs(pessoaFisica);
 
             // Act
-            var resultado = await _service.CriarAsync(pessoaFisica);
+            var resultado = await _service.CriarAsync(request);
 
             // Assert
             Assert.NotNull(resultado);
@@ -146,12 +149,13 @@ namespace PessoasFisicas.Tests.Application.Services
         {
             // Arrange
             var pessoaFisica = new Fixture().Create<PessoaFisica>();
+            var request = new Fixture().Create<PessoaFisicaRequest>();
             var mensagemEsperada = "Erro gerado no teste.";
 
-            _repository.CriarAsync(pessoaFisica).Throws(new Exception(mensagemEsperada));
+            _repository.CriarAsync(pessoaFisica).ThrowsAsyncForAnyArgs(new Exception(mensagemEsperada));
 
             // Act
-            var resultado = await _service.CriarAsync(pessoaFisica);
+            var resultado = await _service.CriarAsync(request);
 
             // Assert
             Assert.NotNull(resultado);
